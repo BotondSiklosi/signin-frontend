@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
 import {UserContext} from "../context/UserContext";
-import loginBackgroundImg from "../Style/login-image.jpg";
+import {useForm} from "react-hook-form";
 
 const LoginStyle = styled.div`
 
@@ -13,13 +13,12 @@ const LoginStyle = styled.div`
 
 
 .form-structor {
-background-color: #a09a9a;
+background-color: rgba(62, 48, 48, 0.76);
 border-radius: 15px;
 height: 550px;
 width: 350px;
 position: relative;
 overflow: hidden;
-opacity: .95;
 
 &::after {
 content: "";
@@ -110,7 +109,7 @@ color: rgba(0, 0, 0, 0.4);
 }
 
 .submit-btn {
-background-color: rgba(0, 0, 0, 0.4);
+background-color: rgba(0,0,0,0.58);
 color: rgba(256, 256, 256, 0.7);
 border: 0;
 border-radius: 15px;
@@ -181,7 +180,7 @@ visibility: hidden;
 .form-holder {
 border-radius: 15px;
 background-color: #fff;
-border: 1px solid #eee;
+border: 1px solid rgba(71,69,69,0.79);
 overflow: hidden;
 margin-top: 50px;
 opacity: 1;
@@ -267,16 +266,27 @@ visibility: visible;
 }
 }
 
-
+  .auth-errors{
+      position: relative;
+      left: 20%;
+      color: #ff0101;
+  }
 `;
 
 function Login() {
 
+    const {register, handleSubmit, errors, watch} = useForm();
+    const password = watch("password");
+
     const {
-        register,
-        login,
-        passwordMissMatch,
-        setPasswordMissMatch
+        register: register2,
+        errors: errors2,
+        handleSubmit: handleSubmit2
+    } = useForm();
+
+    const {
+        customRegister,
+        login
     } = useContext(UserContext);
 
     const slideUpForSignup = (e) => {
@@ -289,8 +299,16 @@ function Login() {
         e.currentTarget.previousSibling.classList.add('slide-up');
     }
 
-    const registerCheck = (e) => {
+    const registerCheck = data => {
 
+        console.log(data);
+        customRegister(data.username, data.email, data.password)
+        // register();
+    }
+
+    const loginCheck = data => {
+        console.log(data)
+        // login(data.username, data.password);
     }
 
     return (
@@ -298,21 +316,83 @@ function Login() {
             <div className="form-structor">
                 <div className="signup" onClick={slideUpForSignup}>
                     <h2 className="form-title" id="signup"><span>or</span>Sign up</h2>
-                    <div className="form-holder">
-                        <input type="text" className="input" placeholder="Name"/>
-                        <input type="password" className="input" placeholder="password"/>
-                        <input type="password-again" className="input" placeholder="Password again"/>
-                    </div>
-                    <button className="submit-btn" onClick={registerCheck}>Sign up</button>
+                    {errors.passwordConfirm && <p className="auth-errors">{errors.passwordConfirm.message}</p>}
+                    {errors.email && <p className="auth-errors">{errors.email.message}</p>}
+                    <form key={1} onSubmit={handleSubmit(registerCheck)}>
+                        <div className="form-holder">
+                            <input
+                                type="text"
+                                className="input"
+                                placeholder="Name"
+                                name="username"
+                                required
+                                ref={register({
+                                    required: true,
+                                    maxLength: 5
+                                })}
+                            />
+                            <input
+                                type="email"
+                                className="input"
+                                placeholder="Email"
+                                name="email" required
+                                ref={register({
+                                    required: true,
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "invalid email address"
+                                    }
+                                })}/>
+                            <input
+                                type="password"
+                                className="input"
+                                placeholder="Password"
+                                name="password"
+                                required
+                                ref={register({
+                                    required: true
+                                })}/>
+                            <input
+                                type="password"
+                                className="input"
+                                placeholder="Password Confirm"
+                                name="passwordConfirm"
+                                required
+                                ref={register({
+                                    required: "Confirm new password is required",
+                                    validate: value =>
+                                        password === value
+                                            ? true
+                                            : "password and password confirm does not match"
+                                })}/>
+                        </div>
+                        <button className="submit-btn" type="submit">Sign up</button>
+                    </form>
                 </div>
                 <div className="login slide-up" onClick={slideUpForLogin}>
                     <div className="center">
                         <h2 className="form-title" id="login"><span>or</span>Log in</h2>
-                        <div className="form-holder">
-                            <input type="email" className="input" placeholder="Email"/>
-                            <input type="password" className="input" placeholder="Password"/>
-                        </div>
-                        <button className="submit-btn">Log in</button>
+                        <form key={2} onSubmit={handleSubmit2(loginCheck)}>
+                            <div className="form-holder">
+                                <input
+                                    type="text"
+                                    className="input"
+                                    placeholder="Username"
+                                    name="username"
+                                    required
+                                    ref={register2({required: true})}
+                                />
+                                <input
+                                    type="password"
+                                    className="input"
+                                    placeholder="Password"
+                                    name="password"
+                                    required
+                                    ref={register2({required: true})}
+                                />
+                            </div>
+                            <button className="submit-btn">Log in</button>
+                        </form>
                     </div>
                 </div>
             </div>

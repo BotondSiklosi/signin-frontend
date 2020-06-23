@@ -1,5 +1,6 @@
 import React, {createContext, useState} from "react";
 import Cookies from "universal-cookie";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -18,30 +19,52 @@ export const UserProvider = props => {
         setLoggedIn(!isLoggedIn);
     };
 
-    const register = () => {
-        const url = "";
+    const customRegister = (name, email, password) => {
+        const url = "/auth/register";
+        axios.post(url, {
+            username: name,
+            email: email,
+            password: password
+        }).then(response => {
+            console.log(response)
+        }).catch(reason => {
+            console.log(reason)
+        })
 
     }
 
-    const login = () => {
-        const url = "";
+    const login = (name, password) => {
+        const url = "/auth/login";
+        axios.post(url, {
+            username: name,
+            password: password
+        }).then(response => {
+            console.log(response);
+        }).catch(reason => {
+            console.log(reason);
+        })
     }
 
     const logout = () => {
-        const url = "";
+        const url = "/auth/logout";
+        axios.get(url)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(reason => {
+                console.log(reason);
+            })
     }
 
     return (
         <UserContext.Provider
             value={{
-                register,
+                customRegister,
                 login,
                 logout,
                 isLoggedIn,
                 setLoggedIn,
-                changeLoginStatus,
-                passwordMissMatch,
-                setPasswordMissMatch
+                changeLoginStatus
             }}
         >
             {props.children}

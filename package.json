@@ -17,6 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3000",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -33,6 +34,8 @@
     ]
   },
   "devDependencies": {
+    "axios": "^0.19.2",
+    "react-hook-form": "^5.7.2",
     "universal-cookie": "^4.0.3",
     "universal-cookie-express": "^4.0.3"
   }

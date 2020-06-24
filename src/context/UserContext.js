@@ -13,7 +13,8 @@ export const UserProvider = props => {
 
     const [isLoggedIn, setLoggedIn] =  useState(checkStatusInCookie());
 
-    const [passwordMissMatch, setPasswordMissMatch] = useState(false);
+    const [loginPopup, setLoginPopup] = useState(false);
+
 
     const changeLoginStatus = () => {
         setLoggedIn(!isLoggedIn);
@@ -64,7 +65,9 @@ export const UserProvider = props => {
                 logout,
                 isLoggedIn,
                 setLoggedIn,
-                changeLoginStatus
+                changeLoginStatus,
+                loginPopup,
+                setLoginPopup
             }}
         >
             {props.children}

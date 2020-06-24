@@ -9,7 +9,7 @@ const LoginStyle = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 80;
+    z-index: 8000;
 
 
 .form-structor {
@@ -280,7 +280,6 @@ function Login() {
 
     const {
         register: register2,
-        errors: errors2,
         handleSubmit: handleSubmit2
     } = useForm();
 
@@ -314,7 +313,7 @@ function Login() {
     return (
         <LoginStyle>
             <div className="form-structor">
-                <div className="signup" onClick={slideUpForSignup}>
+                <div className="signup slide-up" onClick={slideUpForSignup}>
                     <h2 className="form-title" id="signup"><span>or</span>Sign up</h2>
                     {errors.passwordConfirm && <p className="auth-errors">{errors.passwordConfirm.message}</p>}
                     {errors.email && <p className="auth-errors">{errors.email.message}</p>}
@@ -369,7 +368,7 @@ function Login() {
                         <button className="submit-btn" type="submit">Sign up</button>
                     </form>
                 </div>
-                <div className="login slide-up" onClick={slideUpForLogin}>
+                <div className="login" onClick={slideUpForLogin}>
                     <div className="center">
                         <h2 className="form-title" id="login"><span>or</span>Log in</h2>
                         <form key={2} onSubmit={handleSubmit2(loginCheck)}>

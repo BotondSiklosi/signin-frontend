@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import NavBar from "./components/NavBar";
-import {UserProvider} from "./context/UserContext";
+import {UserContext, UserProvider} from "./context/UserContext";
 import LoginPopup from "./components/LoginPopup";
 import GlobalStyle from "./Style/GlobalStyle";
+import TextBody from "./components/TextBody";
 
 function App() {
+
+
+
   return (
     <div className="App">
         <UserProvider>
             <GlobalStyle />
-                <LoginPopup />
                 <NavBar />
+                <TextBody />
         </UserProvider>
-
-
     </div>
   );
 }

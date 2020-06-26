@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import styled from "styled-components";
 import LoginPopup from "./LoginPopup";
 import {UserContext} from "../context/UserContext";
@@ -35,17 +35,29 @@ const StyledNavBar = styled.div`
 
 function NavBar() {
 
-    const { loginPopup, setLoginPopup } = useContext(UserContext);
+    const { loginPopup, setLoginPopup, isLoggedIn, setLoggedIn, me } = useContext(UserContext);
+
 
     const changeLogInPopup = () => {
         setLoginPopup(!loginPopup)
     }
 
+    const changeIsLoggedIn = () => {
+        setLoggedIn(null)
+    }
+
     return (
         <StyledNavBar>
-            <div className="navBar-container">
-                <button className="login-button" onClick={changeLogInPopup}>Login</button>
-            </div>
+            {isLoggedIn ?
+                <div className="navBar-container">
+                    <button className="login-button" onClick={changeIsLoggedIn}>logout</button>
+                </div>
+                :
+                <div className="navBar-container">
+                    <button className="login-button" onClick={changeLogInPopup}>Login</button>
+                </div>
+            }
+
             {loginPopup && <LoginPopup />}
         </StyledNavBar>
     )

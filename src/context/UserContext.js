@@ -5,13 +5,25 @@ import axios from "axios";
 export const UserContext = createContext();
 
 export const UserProvider = props => {
-    const checkStatusInCookie = () => {
-        let cookie = new Cookies();
-        let status = cookie.get("isLoggedIn");
-        return status ? JSON.parse(status) : false;
-    };
 
-    const [isLoggedIn, setLoggedIn] =  useState(checkStatusInCookie());
+    const me = () => {
+        let name = "";
+        const url = "/auth/me"
+
+        axios.get(url)
+            .then(resp => {
+                if (resp.status === 200) {
+                    name = resp.data;
+                } else {
+                    name = "";
+                }
+            })
+            .catch(res => console.log(res))
+        console.log(name)
+        return name
+    }
+
+    const [isLoggedIn, setLoggedIn] =  useState(null);
 
     const [loginPopup, setLoginPopup] = useState(false);
 
@@ -34,13 +46,15 @@ export const UserProvider = props => {
 
     }
 
+
     const login = (name, password) => {
         const url = "/auth/login";
         axios.post(url, {
             username: name,
+            email: "admin@thegod.com",
             password: password
         }).then(response => {
-            console.log(response);
+            setLoggedIn(response.data);
         }).catch(reason => {
             console.log(reason);
         })
@@ -67,7 +81,8 @@ export const UserProvider = props => {
                 setLoggedIn,
                 changeLoginStatus,
                 loginPopup,
-                setLoginPopup
+                setLoginPopup,
+                me
             }}
         >
             {props.children}

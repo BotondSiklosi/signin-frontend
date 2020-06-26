@@ -285,7 +285,8 @@ function Login() {
 
     const {
         customRegister,
-        login
+        login,
+        setLoginPopup
     } = useContext(UserContext);
 
     const slideUpForSignup = (e) => {
@@ -305,9 +306,12 @@ function Login() {
         // register();
     }
 
+
     const loginCheck = data => {
         console.log(data)
-        // login(data.username, data.password);
+        login(data.username, data.password);
+        setLoginPopup(false)
+
     }
 
     return (
